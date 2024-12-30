@@ -28,13 +28,13 @@ function getCFdetails(codstatus, isOnlyCurrency) {
         onlyCurrencyFlag.value = isOnlyCurrency ? 'true' : 'false';
 
 
-         // Handle radio button selection
+        // Update radio selection
         var radioButtons = document.getElementsByName('codtype_cdt');
         radioButtons.forEach(function(radio) {
             if (isOnlyCurrency) {
                 radio.checked = (radio.id === 'only_currency');
-            } else {
-                radio.checked = (radio.value === codstatus.toString() && radio.id !== 'only_currency');
+            } else if (radio.value === codstatus.toString()) {
+                radio.checked = (radio.id !== 'only_currency');
             }
         });
         getBasicDetails('', searchString, codstatus);
