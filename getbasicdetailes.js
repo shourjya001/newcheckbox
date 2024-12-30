@@ -87,8 +87,15 @@ function getBasicDetails(type, codspm, codstatus) {
                 // if (response.some(item => item.CODSTATUS == '26')) {
                 //     document.getElementById('only_currency').disabled = false;
                 // }
-                if (response.some(item => item.CODSTATUS == '26') && codstatus!== '25') {
+                // if (response.some(item => item.CODSTATUS == '26') && codstatus!== '25') {
+                //     document.getElementById('only_currency').disabled = false;
+                // }
+
+                // Always enable "Only Currency without limits" radio if status 26 is available
+                if (response.some(item => item.CODSTATUS == '26')) {
                     document.getElementById('only_currency').disabled = false;
+                    // Add the following line to prevent the automatic checking of the "Only Currency without limits" radio button
+                    document.getElementById('only_currency').checked = false;
                 }
             }
         }
