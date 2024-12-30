@@ -26,10 +26,10 @@ function getCFdetails(codstatus, isOnlyCurrency) {
         }
         onlyCurrencyFlag.value = isOnlyCurrency? 'true' : 'false';
 
-        var radioButtons = document.getElementsByName('codtype_cdt');
-        for (var i = 0; i < radioButtons.length; i++) {
-            radioButtons[i].checked = false;
-        }
+        // var radioButtons = document.getElementsByName('codtype_cdt');
+        // for (var i = 0; i < radioButtons.length; i++) {
+        //     radioButtons[i].checked = false;
+        // }
 
         if (isOnlyCurrency) {
             document.getElementById('only_currency').checked = true;
