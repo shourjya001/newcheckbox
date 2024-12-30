@@ -1,6 +1,5 @@
-// Function to handle credit file details retrieval
-
-function getBasicDetails(type, codspm, codstatus, updateType) {
+function getBasicDetails(type, codspm, codstatus) {
+    // Set codstatus to an empty string if it's not provided
     codstatus = codstatus || '';
     
     var xmlhttp;
@@ -13,6 +12,7 @@ function getBasicDetails(type, codspm, codstatus, updateType) {
         return;
     }
 
+    // Set up the callback function
     xmlhttp.onreadystatechange = function() {
         if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
             var response;
@@ -24,6 +24,7 @@ function getBasicDetails(type, codspm, codstatus, updateType) {
             }
 
             if (response.id === 'None') {
+                // Disable radio buttons and clear old currency
                 var codtypeInputs = document.getElementsByName('codtype_cdt');
                 for (var i = 0; i < codtypeInputs.length; i++) {
                     codtypeInputs[i].disabled = true;
@@ -33,29 +34,37 @@ function getBasicDetails(type, codspm, codstatus, updateType) {
                 alert("No credit files available!");
             } else {
                 var first = 0;
-                var newarr = [25, 26];
+                var newarr = [25, 26];  // Status codes remain the same
 
                 for (var i = 0; i < response.length; i++) {
                     var item = response[i];
                     
+                    // Filter out existing status codes
                     for (var j = 0; j < newarr.length; j++) {
                         if (newarr[j] == item.CODSTATUS) {
                             newarr.splice(j, 1);
                         }
                     }
 
+                    // Update the first credit file
                     if (first == 0) {
                         document.getElementById('oldcurrency').innerHTML = item.CODCUR;
                         var codtypeInputs = document.getElementsByName('codtype_cdt');
                         for (var k = 0; k < codtypeInputs.length; k++) {
                             if (codtypeInputs[k].value == item.CODSTATUS) {
-                                codtypeInputs[k].checked = true;
+                                // Enable all radio buttons with matching status code
                                 codtypeInputs[k].disabled = false;
+                                
+                                // Only check the first matching radio button
+                                if (k === 0) {
+                                    codtypeInputs[k].checked = true;
+                                }
                             }
                         }
                         first++;
                     }
 
+                    // Enable all radio buttons with matching status
                     var codtypeInputsAll = document.getElementsByName('codtype_cdt');
                     for (var l = 0; l < codtypeInputsAll.length; l++) {
                         if (codtypeInputsAll[l].value == item.CODSTATUS) {
@@ -64,6 +73,7 @@ function getBasicDetails(type, codspm, codstatus, updateType) {
                     }
                 }
 
+                // Handle remaining status codes
                 if (newarr.length > 0 && codstatus === '') {
                     var codtypeInputsAgain = document.getElementsByName('codtype_cdt');
                     for (var m = 0; m < codtypeInputsAgain.length; m++) {
@@ -72,15 +82,19 @@ function getBasicDetails(type, codspm, codstatus, updateType) {
                         }
                     }
                 }
+                
+                // Always enable "Only Currency without limits" radio if status 26 is available
+                if (response.some(item => item.CODSTATUS == '26')) {
+                    document.getElementById('only_currency').disabled = false;
+                }
             }
         }
     };
 
-    var url = "fetchCFdetails.php?searchString=" + codspm;
+    var url = 'fetchCFdetails.php?searchString=' + encodeURIComponent(codspm);
     if (codstatus !== '') {
-        url += "&codstatus=" + codstatus;
+        url += '&codstatus=' + encodeURIComponent(codstatus);
     }
-    url += "&updateType=" + updateType;
     xmlhttp.open("GET", url, true);
     xmlhttp.send();
 }
