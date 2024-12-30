@@ -56,9 +56,9 @@ function getBasicDetails(type, codspm, codstatus) {
                                 codtypeInputs[k].disabled = false;
                                 
                                 // Only check the first matching radio button
-                                if (k === 0) {
-                                    codtypeInputs[k].checked = true;
-                                }
+                                // if (k === 0) {
+                                //     codtypeInputs[k].checked = true;
+                                // }
                             }
                         }
                         first++;
