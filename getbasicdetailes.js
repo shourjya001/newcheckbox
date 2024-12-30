@@ -84,7 +84,10 @@ function getBasicDetails(type, codspm, codstatus) {
                 }
                 
                 // Always enable "Only Currency without limits" radio if status 26 is available
-                if (response.some(item => item.CODSTATUS == '26')) {
+                // if (response.some(item => item.CODSTATUS == '26')) {
+                //     document.getElementById('only_currency').disabled = false;
+                // }
+                if (response.some(item => item.CODSTATUS == '26') && codstatus!== '25') {
                     document.getElementById('only_currency').disabled = false;
                 }
             }
