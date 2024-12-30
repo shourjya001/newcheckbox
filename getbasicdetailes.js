@@ -91,10 +91,12 @@ function getBasicDetails(type, codspm, codstatus) {
         }
     };
 
-    var url = 'fetchCFdetails.php?searchString=' + encodeURIComponent(codspm);
+    var params = "searchType=FetchCFdetails&searchString=" + encodeURIComponent(codspm);
     if (codstatus !== '') {
-        url += '&codstatus=' + encodeURIComponent(codstatus);
+        params += "&codstatus=" + encodeURIComponent(codstatus);
     }
-    xmlhttp.open("GET", url, true);
-    xmlhttp.send();
+    
+    xmlhttp.open("POST", "dbe_cfl_ModifyCurrency_Save.php", true);
+    xmlhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+    xmlhttp.send(params);
 }
